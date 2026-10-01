@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <!-- Kraft paper grain on top of the panel's brown 2 base (white kraft). Every layer stitches, so the tile repeats without seams. -->
+  <!-- Mottling: soft patches in brown 4 (#f0e4d9). -->
+  <filter id="mottle" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="7" stitchTiles="stitch"/>
+    <feColorMatrix values="0 0 0 0 0.941  0 0 0 0 0.894  0 0 0 0 0.851  1.6 0 0 0 -0.6"/>
+  </filter>
+  <!-- Fibres: short strands in brown 7 (#dcbc9f). -->
+  <filter id="fibres" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.09 0.5" numOctaves="2" seed="3" stitchTiles="stitch"/>
+    <feColorMatrix values="0 0 0 0 0.863  0 0 0 0 0.737  0 0 0 0 0.624  4 0 0 0 -2.55"/>
+  </filter>
+  <!-- Fibres the other way, so they don't all run one direction. -->
+  <filter id="fibres-cross" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.5 0.09" numOctaves="2" seed="11" stitchTiles="stitch"/>
+    <feColorMatrix values="0 0 0 0 0.863  0 0 0 0 0.737  0 0 0 0 0.624  4 0 0 0 -2.6"/>
+  </filter>
+  <!-- Darker flecks in brown 6 (#e4cdb7). -->
+  <filter id="flecks" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" seed="5" stitchTiles="stitch"/>
+    <feColorMatrix values="0 0 0 0 0.894  0 0 0 0 0.804  0 0 0 0 0.718  0 5 0 0 -3.1"/>
+  </filter>
+  <rect width="320" height="320" filter="url(#mottle)" opacity="0.9"/>
+  <rect width="320" height="320" filter="url(#fibres)" opacity="0.5"/>
+  <rect width="320" height="320" filter="url(#fibres-cross)" opacity="0.35"/>
+  <rect width="320" height="320" filter="url(#flecks)" opacity="0.5"/>
+</svg>

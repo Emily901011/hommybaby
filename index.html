@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Hommy Baby | Handmade blessings for little ones</title>
+  <meta name="description" content="One-of-a-kind baby gifts, handmade at home by mothers in Taiwan and sent with a blessing anywhere in Canada.">
+  <!-- 分享連結時的預覽（LINE、WhatsApp、iMessage）。換網址時，og:url 和 og:image 一起改。 -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Hommy Baby | Handmade blessings for little ones">
+  <meta property="og:description" content="One-of-a-kind baby gifts, handmade at home by mothers in Taiwan and sent with a blessing anywhere in Canada.">
+  <meta property="og:url" content="https://emily901011.github.io/hommybaby/">
+  <meta property="og:image" content="https://emily901011.github.io/hommybaby/images/baby-full.jpg">
+  <link rel="icon" href="images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-current="intro">
+  <p class="preview-banner" id="preview-banner" hidden>
+    Preview mode: orders are not sent anywhere yet. Add your email to config.js to start taking orders.
+  </p>
+
+  <header class="app-bar">
+    <button type="button" class="bar-button" id="back-button" hidden>
+      <span class="icon" style="--icon: url(icons/arrow-left.svg)" aria-hidden="true"></span>
+      <span class="visually-hidden">Back</span>
+    </button>
+    <p class="bar-progress" id="bar-progress" aria-live="polite"></p>
+    <button type="button" class="bar-button bar-button--help" id="help-button" aria-haspopup="dialog">
+      <span aria-hidden="true">?</span>
+      <span class="visually-hidden">Questions and answers</span>
+    </button>
+  </header>
+
+  <form id="order-form" novalidate autocomplete="off">
+    <!-- 1. A shooting star, then the baby -->
+    <section class="screen screen--intro band band--night is-active" data-screen="intro" aria-labelledby="intro-title">
+      <div class="shooting-star" aria-hidden="true"><span></span></div>
+      <div class="intro">
+        <div class="intro-burst" aria-hidden="true"></div>
+        <img class="intro-baby" src="images/baby-full.jpg" alt="A sleeping baby in a pink Hommy onesie" width="960" height="960">
+        <h1 class="intro-title" id="intro-title" tabindex="-1">A new life has arrived.<br>Here is my blessing.</h1>
+        <p class="intro-sub">A one-of-a-kind gift, handmade with love for a little one, with a hand-written card.</p>
+        <button type="button" class="button button--cream intro-go" data-go="about">Continue</button>
+      </div>
+    </section>
+
+    <!-- 2. Who we are: what the gift means -->
+    <section class="screen screen--about band band--night" data-screen="about" aria-labelledby="about-title">
+      <div class="about">
+        <img class="about-mark" src="images/logo-white.png" alt="" width="480" height="480">
+        <h2 id="about-title" tabindex="-1">Your wish, sewn by hand</h2>
+        <p class="about-lede">A gift for the moment you want a little one to feel how loved they are.</p>
+        <ul class="values">
+          <li>
+            <span class="icon" style="--icon: url(icons/sparkle.svg)" aria-hidden="true"></span>
+            <div>
+              <h3>A gift unlike any other</h3>
+              <p>Every piece is sewn by hand and made only once, as one of a kind as the little one it's for.</p>
+            </div>
+          </li>
+          <li>
+            <span class="icon" style="--icon: url(icons/pen-nib.svg)" aria-hidden="true"></span>
+            <div>
+              <h3>Your blessing comes first</h3>
+              <p>A gift is really a wish. The blessing you choose and the words you write travel with it, hand-written and wrapped with care.</p>
+            </div>
+          </li>
+          <li>
+            <span class="icon" style="--icon: url(icons/hand-heart.svg)" aria-hidden="true"></span>
+            <div>
+              <h3>Made with a mother's care</h3>
+              <p>Sewn at home in Taiwan by mothers we pay fairly, in soft Japanese cotton gauze and fine cottons.</p>
+            </div>
+          </li>
+        </ul>
+        <button type="button" class="button button--gold" data-go="build">Begin my blessing</button>
+      </div>
+    </section>
+
+    <!-- 3. Face, stage and gift -->
+    <section class="screen screen--build band band--paper" data-screen="build" aria-labelledby="build-title">
+      <div class="studio">
+        <div class="doll-slot" data-doll-slot></div>
+        <div class="studio-panel">
+          <h2 id="build-title" class="studio-title" tabindex="-1">Who is it for?</h2>
+          <fieldset class="pick">
+            <legend>Their face</legend>
+            <div class="face-grid" id="face-choices"></div>
+          </fieldset>
+          <fieldset class="pick">
+            <legend>Their stage</legend>
+            <div class="tile-row" id="stage-choices"></div>
+          </fieldset>
+          <p class="form-error" data-error role="alert" hidden></p>
+          <button type="button" class="button button--orange" data-next>Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. The blessing colour: the heart of the gift, each with its own picture-book scene -->
+    <section class="screen screen--blessing band band--paper" data-screen="blessing" aria-labelledby="blessing-title">
+      <div class="scenes" aria-hidden="true">
+        <div class="scene" data-scene="morning-star"><div class="scene-paint"></div><svg class="scene-motion" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="meteor-tail" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="160" y2="-68"><stop offset="0" stop-color="#fefdfc"/><stop offset="1" stop-color="#fefdfc" stop-opacity="0"/></linearGradient></defs><g transform="translate(330 120) scale(1)"><path class="twinkle" d="M0 -10L2.5 -2.5L10 0L2.5 2.5L0 10L-2.5 2.5L-10 0L-2.5 -2.5Z" fill="#fefdfc" style="animation-delay:0.00s"/></g><g transform="translate(620 90) scale(0.8)"><path class="twinkle" d="M0 -10L2.5 -2.5L10 0L2.5 2.5L0 10L-2.5 2.5L-10 0L-2.5 -2.5Z" fill="#fefdfc" style="animation-delay:0.53s"/></g><g transform="translate(450 220) scale(0.7)"><path class="twinkle" d="M0 -10L2.5 -2.5L10 0L2.5 2.5L0 10L-2.5 2.5L-10 0L-2.5 -2.5Z" fill="#fefdfc" style="animation-delay:1.06s"/></g><g transform="translate(760 170) scale(0.9)"><path class="twinkle" d="M0 -10L2.5 -2.5L10 0L2.5 2.5L0 10L-2.5 2.5L-10 0L-2.5 -2.5Z" fill="#fefdfc" style="animation-delay:1.59s"/></g><g class="meteor" style="--x0:900px; --y0:120px; --x1:360px; --y1:350px; animation-delay:0s"><path d="M0 0L160 -68" stroke="url(#meteor-tail)" stroke-width="3" stroke-linecap="round"/><circle r="11" fill="#fefdfc" opacity="0.3"/><circle r="4.5" fill="#fefdfc"/></g><g class="meteor" style="--x0:820px; --y0:40px; --x1:300px; --y1:262px; animation-delay:1.7s"><path d="M0 0L160 -68" stroke="url(#meteor-tail)" stroke-width="3" stroke-linecap="round"/><circle r="11" fill="#fefdfc" opacity="0.3"/><circle r="4.5" fill="#fefdfc"/></g><g class="meteor" style="--x0:1000px; --y0:260px; --x1:480px; --y1:480px; animation-delay:3.3s"><path d="M0 0L160 -68" stroke="url(#meteor-tail)" stroke-width="3" stroke-linecap="round"/><circle r="11" fill="#fefdfc" opacity="0.3"/><circle r="4.5" fill="#fefdfc"/></g></svg></div>
+        <div class="scene" data-scene="big-heart"><div class="scene-paint"></div><svg class="scene-motion" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice"><defs></defs><g class="bob"><g transform="translate(705 175) scale(0.8)"><defs><radialGradient id="balloon-paint" cx="0.35" cy="0.3" r="0.8"><stop offset="0" stop-color="#ff9592"/><stop offset="0.55" stop-color="#e5484d"/><stop offset="1" stop-color="#ce2c31"/></radialGradient></defs><path d="M0 -80C-58 -80 -78 -30 -66 8C-56 40 -22 62 -12 86H12C22 62 56 40 66 8C78 -30 58 -80 0 -80Z" fill="url(#balloon-paint)"/><path d="M0 -80C-26 -66 -30 -10 -12 86H12C30 -10 26 -66 0 -80Z" fill="#fff7ed" opacity="0.35"/><path d="M-12 86L-10 104M12 86L10 104" stroke="#815e46" stroke-width="2"/><rect x="-13" y="104" width="26" height="20" rx="4" fill="#ad7f58"/></g></g></svg></div>
+        <div class="scene" data-scene="rose-fairy"><div class="scene-paint"></div><svg class="scene-motion" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice"><defs></defs><g class="rise" style="--dur:11s; --sway:30px; animation-delay:0s"><g transform="translate(330 1080) scale(1.3)"><path d="M0 -8C-10 -24 -34 -12 -24 8L0 30L24 8C34 -12 10 -24 0 -8Z" fill="#dd93c2" opacity="0.85"/></g></g><g class="rise" style="--dur:9s; --sway:-20px; animation-delay:-3s"><g transform="translate(450 1080) scale(0.8)"><path d="M0 -8C-10 -24 -34 -12 -24 8L0 30L24 8C34 -12 10 -24 0 -8Z" fill="#fefdfc" opacity="0.85"/></g></g><g class="rise" style="--dur:13s; --sway:25px; animation-delay:-6s"><g transform="translate(560 1080) scale(1.6)"><path d="M0 -8C-10 -24 -34 -12 -24 8L0 30L24 8C34 -12 10 -24 0 -8Z" fill="#e093b2" opacity="0.85"/></g></g><g class="rise" style="--dur:10s; --sway:-30px; animation-delay:-1.5s"><g transform="translate(640 1080) scale(1.0)"><path d="M0 -8C-10 -24 -34 -12 -24 8L0 30L24 8C34 -12 10 -24 0 -8Z" fill="#eaacc3" opacity="0.85"/></g></g><g class="rise" style="--dur:12s; --sway:20px; animation-delay:-8s"><g transform="translate(400 1080) scale(1.1)"><path d="M0 -8C-10 -24 -34 -12 -24 8L0 30L24 8C34 -12 10 -24 0 -8Z" fill="#f6cee7" opacity="0.85"/></g></g><g class="rise" style="--dur:9.5s; --sway:-15px; animation-delay:-4.5s"><g transform="translate(700 1080) scale(0.9)"><path d="M0 -8C-10 -24 -34 -12 -24 8L0 30L24 8C34 -12 10 -24 0 -8Z" fill="#dd93c2" opacity="0.85"/></g></g><g class="rise" style="--dur:14s; --sway:30px; animation-delay:-10s"><g transform="translate(500 1080) scale(1.4)"><path d="M0 -8C-10 -24 -34 -12 -24 8L0 30L24 8C34 -12 10 -24 0 -8Z" fill="#fefdfc" opacity="0.85"/></g></g><g class="rise" style="--dur:8.5s; --sway:20px; animation-delay:-2s"><g transform="translate(600 1080) scale(0.7)"><path d="M0 -8C-10 -24 -34 -12 -24 8L0 30L24 8C34 -12 10 -24 0 -8Z" fill="#e093b2" opacity="0.85"/></g></g></svg></div>
+        <div class="scene" data-scene="moon-keeper"><div class="scene-paint"></div><svg class="scene-motion" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="meteor-tail-night" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="160" y2="-68"><stop offset="0" stop-color="#fefdfc"/><stop offset="1" stop-color="#fefdfc" stop-opacity="0"/></linearGradient></defs><g transform="translate(520 120) scale(1)"><path class="twinkle" d="M0 -10L2.5 -2.5L10 0L2.5 2.5L0 10L-2.5 2.5L-10 0L-2.5 -2.5Z" fill="#fefdfc" style="animation-delay:0.00s"/></g><g transform="translate(660 300) scale(0.8)"><path class="twinkle" d="M0 -10L2.5 -2.5L10 0L2.5 2.5L0 10L-2.5 2.5L-10 0L-2.5 -2.5Z" fill="#fefdfc" style="animation-delay:0.53s"/></g><g transform="translate(820 200) scale(0.9)"><path class="twinkle" d="M0 -10L2.5 -2.5L10 0L2.5 2.5L0 10L-2.5 2.5L-10 0L-2.5 -2.5Z" fill="#fefdfc" style="animation-delay:1.06s"/></g><g transform="translate(430 380) scale(0.7)"><path class="twinkle" d="M0 -10L2.5 -2.5L10 0L2.5 2.5L0 10L-2.5 2.5L-10 0L-2.5 -2.5Z" fill="#fefdfc" style="animation-delay:1.59s"/></g><g transform="translate(900 90) scale(0.8)"><path class="twinkle" d="M0 -10L2.5 -2.5L10 0L2.5 2.5L0 10L-2.5 2.5L-10 0L-2.5 -2.5Z" fill="#fefdfc" style="animation-delay:2.12s"/></g><g class="meteor" style="--x0:980px; --y0:60px; --x1:520px; --y1:260px; animation-delay:2s"><path d="M0 0L160 -68" stroke="url(#meteor-tail-night)" stroke-width="3" stroke-linecap="round"/><circle r="11" fill="#fefdfc" opacity="0.3"/><circle r="4.5" fill="#fefdfc"/></g></svg></div>
+        <div class="scene" data-scene="sylph"><div class="scene-paint"></div><svg class="scene-motion" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice"><defs></defs></svg></div>
+        <div class="scene" data-scene="oak-dryad"><div class="scene-paint"></div><svg class="scene-motion" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice"><defs></defs></svg></div>
+      </div>
+      <div class="blessing">
+        <div class="doll-slot" data-doll-slot></div>
+        <div class="blessing-panel">
+          <h2 id="blessing-title" class="blessing-prompt" tabindex="-1">Choose the blessing you wish for them</h2>
+          <p class="blessing-name" id="blessing-name" aria-live="polite"></p>
+          <p class="blessing-words" id="blessing-words">Every colour carries a wish. Tap one to see it.</p>
+          <div class="swatch-row" id="guardian-choices"></div>
+          <p class="blessing-promise">We'll sew this wish into every piece.</p>
+          <p class="form-error" data-error role="alert" hidden></p>
+          <button type="button" class="button button--orange" data-next>Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. The offer, shown after the blessing so the wish comes before the price -->
+    <section class="screen screen--offer band band--paper" data-screen="offer" aria-labelledby="offer-title">
+      <div class="studio">
+        <div class="doll-slot" data-doll-slot></div>
+        <div class="studio-panel">
+          <h2 id="offer-title" class="studio-title" tabindex="-1">How should it arrive?</h2>
+          <div class="tile-row" id="plan-choices"></div>
+          <div class="includes">
+            <p class="includes-title">Every gift includes</p>
+            <ul id="includes-list"></ul>
+          </div>
+          <button type="button" class="gifts-teaser" id="stories-open" aria-haspopup="dialog">
+            <span class="gifts-thumbs" id="gifts-thumbs" aria-hidden="true"></span>
+            <span class="gifts-text">See real Hommy gifts<small>Every piece is made only once</small></span>
+          </button>
+          <p class="form-error" data-error role="alert" hidden></p>
+          <button type="button" class="button button--orange" data-next>Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Where to send it -->
+    <section class="screen screen--ship band band--paper" data-screen="ship" aria-labelledby="ship-title">
+      <div class="sheet">
+        <div class="sheet-head">
+          <div class="doll-slot doll-slot--mini" data-doll-slot></div>
+          <h2 id="ship-title" tabindex="-1">Where should we send it?</h2>
+        </div>
+        <div class="field-group">
+          <label class="field field--wide">
+            <span>Recipient's full name</span>
+            <input name="recipientName" required autocomplete="shipping name">
+          </label>
+          <label class="field field--wide">
+            <span>Street address</span>
+            <input name="address1" required autocomplete="shipping address-line1">
+          </label>
+          <label class="field field--wide">
+            <span>Apartment, suite or unit <small>(optional)</small></span>
+            <input name="address2" autocomplete="shipping address-line2">
+          </label>
+          <label class="field">
+            <span>City</span>
+            <input name="city" required autocomplete="shipping address-level2">
+          </label>
+          <label class="field">
+            <span>Province or territory</span>
+            <select name="province" required autocomplete="shipping address-level1">
+              <option value="">Choose one</option>
+              <option>Alberta</option>
+              <option selected>British Columbia</option>
+              <option>Manitoba</option>
+              <option>New Brunswick</option>
+              <option>Newfoundland and Labrador</option>
+              <option>Northwest Territories</option>
+              <option>Nova Scotia</option>
+              <option>Nunavut</option>
+              <option>Ontario</option>
+              <option>Prince Edward Island</option>
+              <option>Quebec</option>
+              <option>Saskatchewan</option>
+              <option>Yukon</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Postal code</span>
+            <input name="postalCode" required autocomplete="shipping postal-code"
+              pattern="[A-Za-z]\d[A-Za-z][ \-]?\d[A-Za-z]\d" maxlength="7" placeholder="V6B 1A1">
+          </label>
+          <label class="field">
+            <span>Hoping it arrives by <small>(optional)</small></span>
+            <input type="date" name="arriveBy" id="arrive-by">
+          </label>
+        </div>
+        <p class="hint" id="delivery-hint"></p>
+        <button type="button" class="button button--orange" data-next>Next</button>
+      </div>
+    </section>
+
+    <!-- 7. Who it's from, then send -->
+    <section class="screen screen--you band band--paper" data-screen="you" aria-labelledby="you-title">
+      <div class="sheet">
+        <div class="sheet-head">
+          <div class="doll-slot doll-slot--mini" data-doll-slot></div>
+          <h2 id="you-title" tabindex="-1">Your details</h2>
+        </div>
+        <div class="field-group">
+          <label class="field field--wide">
+            <span>Your name</span>
+            <input name="buyerName" required autocomplete="name">
+          </label>
+          <label class="field">
+            <span>Email</span>
+            <input type="email" name="email" required autocomplete="email">
+          </label>
+          <label class="field">
+            <span>Phone <small>(optional)</small></span>
+            <input type="tel" name="phone" autocomplete="tel">
+          </label>
+        </div>
+        <dl class="summary" id="summary"></dl>
+        <p class="summary-total">Total <strong id="summary-total"></strong> <span>shipping included</span></p>
+        <ul class="care-list">
+          <li>
+            <span class="icon" style="--icon: url(icons/clock.svg)" aria-hidden="true"></span>
+            <span>Two to three days of handwork in every piece.</span>
+          </li>
+          <li>
+            <span class="icon" style="--icon: url(icons/hand-heart.svg)" aria-hidden="true"></span>
+            <span>Bought fairly, supporting a mother who sews.</span>
+          </li>
+          <li>
+            <span class="icon" style="--icon: url(icons/gift.svg)" aria-hidden="true"></span>
+            <span>Gift-boxed and shipped within about three days.</span>
+          </li>
+        </ul>
+        <p class="hint">You'll pay by Interac e-Transfer after sending. We'll show you exactly how.</p>
+        <p class="form-error" id="form-error" role="alert" hidden></p>
+        <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit" class="button button--orange" id="seal-button">Send my blessing</button>
+      </div>
+    </section>
+
+    <!-- 8. Received, then the thank-you card -->
+    <section class="screen screen--done band band--night" data-screen="done" aria-labelledby="done-title">
+      <div class="shooting-star" aria-hidden="true"><span></span></div>
+      <div class="done">
+        <div class="doll-slot doll-slot--done" data-doll-slot></div>
+        <h2 id="done-title" tabindex="-1">Your blessing has been received</h2>
+        <p class="done-lede">
+          It's now being made by hand and ships within about <span id="done-days"></span> days. We'll email <strong id="done-email"></strong> right away.
+          Order <strong id="done-order"></strong>.
+        </p>
+        <div class="pay">
+          <h3 id="pay-title">To finish, send an Interac e-Transfer</h3>
+          <dl class="pay-list">
+            <div>
+              <dt>Amount</dt>
+              <dd id="pay-amount"></dd>
+            </div>
+            <div>
+              <dt>Send to</dt>
+              <dd>
+                <span id="pay-email"></span>
+                <button type="button" class="copy" data-copy="pay-email">
+                  <span class="icon" style="--icon: url(icons/copy.svg)" aria-hidden="true"></span>
+                  <span class="copy-label">Copy</span>
+                </button>
+              </dd>
+            </div>
+            <div>
+              <dt>Message</dt>
+              <dd>
+                <span id="pay-memo"></span>
+                <button type="button" class="copy" data-copy="pay-memo">
+                  <span class="icon" style="--icon: url(icons/copy.svg)" aria-hidden="true"></span>
+                  <span class="copy-label">Copy</span>
+                </button>
+              </dd>
+            </div>
+            <div>
+              <dt>Within</dt>
+              <dd id="pay-window"></dd>
+            </div>
+          </dl>
+        </div>
+        <p class="done-close">We believe it will be the most beautiful gift they receive.</p>
+        <button type="button" class="button button--cream" id="again-button">Make another blessing</button>
+      </div>
+      <div class="thanks" id="thanks">
+        <img class="thanks-card" src="images/maker-sewing.jpg" alt="A thank-you card: a mother sewing at her machine under a warm lamp" width="1092" height="1499">
+        <button type="button" class="button button--gold" id="thanks-close">See how to pay</button>
+      </div>
+    </section>
+  </form>
+
+  <!-- The chosen baby: one figure that moves between the screens' slots -->
+  <div class="doll-float" id="doll-float" aria-hidden="true">
+    <div class="doll" id="doll" aria-hidden="true">
+      <div class="doll-stage">
+        <img class="doll-baby" id="doll-baby" src="images/body-pink.jpg" alt="" width="600" height="600">
+        <img class="doll-hands" id="doll-hands" src="images/hands-04.png" alt="" width="480" height="480">
+        <span class="doll-erase"></span>
+        <svg class="piece piece--cape" viewBox="0 0 260 150">
+          <defs>
+            <pattern id="cape-dots" width="16" height="16" patternUnits="userSpaceOnUse">
+              <ellipse class="tint-cream" cx="4" cy="4" rx="2.5" ry="1.6" transform="rotate(-35 4 4)"/>
+              <ellipse class="tint-cream" cx="11.52" cy="11.52" rx="2.2" ry="1.5" transform="rotate(20 11.52 11.52)"/>
+            </pattern>
+            <radialGradient id="cape-wash" cx="50%" cy="22%" r="85%">
+              <stop offset="0" class="stop-light"/>
+              <stop offset="0.55" class="stop-main"/>
+              <stop offset="1" class="stop-deep"/>
+            </radialGradient>
+            <filter id="hand-cape" x="-6%" y="-6%" width="112%" height="112%" color-interpolation-filters="sRGB">
+              <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="4" result="warp"/>
+              <feDisplacementMap in="SourceGraphic" in2="warp" scale="4" xChannelSelector="R" yChannelSelector="G" result="shape"/>
+              <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="7" result="noise"/>
+              <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.24  0 0 0 0 0.2  0 0 0 0 0.18  0 0 0 0.6 -0.2" result="flecks"/>
+              <feComposite in="flecks" in2="shape" operator="in" result="grain"/>
+              <feMerge><feMergeNode in="shape"/><feMergeNode in="grain"/></feMerge>
+            </filter>
+          </defs>
+          <!-- Poncho cape drawn after the real Hommy capes: flared bell, fleece collar, buttons, patch pockets -->
+          <g filter="url(#hand-cape)">
+            <path fill="url(#cape-wash)" d="M104 10C84 16 52 44 34 84C24 106 14 122 16 132Q46 146 82 140Q130 150 178 140Q214 146 244 132C246 122 236 106 226 84C208 44 176 16 156 10C150 26 110 26 104 10Z"/>
+            <path fill="url(#cape-dots)" d="M104 10C84 16 52 44 34 84C24 106 14 122 16 132Q46 146 82 140Q130 150 178 140Q214 146 244 132C246 122 236 106 226 84C208 44 176 16 156 10C150 26 110 26 104 10Z"/>
+            <path class="stroke-dark" d="M104 10C84 16 52 44 34 84C24 106 14 122 16 132Q46 146 82 140Q130 150 178 140Q214 146 244 132C246 122 236 106 226 84C208 44 176 16 156 10C150 26 110 26 104 10Z" stroke-width="2" fill="none" opacity="0.3"/>
+            <path class="stroke-dark" d="M70 40C64 70 60 100 62 136M190 40C196 70 200 100 198 136" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.18"/>
+            <path class="stroke-light" d="M22 126Q50 138 82 133Q130 142 178 133Q212 138 238 126" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.8"/>
+            <path class="stroke-dark" d="M130 40V144" stroke-width="1.5" opacity="0.45"/>
+            <rect class="tint-dark" x="64" y="92" width="32" height="26" rx="7" opacity="0.55"/>
+            <rect class="tint-dark" x="164" y="92" width="32" height="26" rx="7" opacity="0.55"/>
+            <path class="stroke-light" d="M68 97H92M168 97H192" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.8"/>
+            <circle class="tint-dark" cx="130" cy="98" r="3.2"/>
+            <circle class="tint-dark" cx="130" cy="120" r="3.2"/>
+            <path class="tint-fleece" d="M96 8C104 30 156 30 164 8C168 22 156 40 130 40C104 40 92 22 96 8Z"/>
+            <path class="stroke-fleece" d="M96 10C96 30 116 40 130 40C144 40 164 30 164 10" stroke-width="6" stroke-linecap="round" stroke-dasharray="0 6" fill="none"/>
+            <path class="stroke-dark" d="M104 14C112 28 148 28 156 14" stroke-width="2" fill="none" opacity="0.2"/>
+          </g>
+          <circle class="mark-bg" cx="130" cy="70" r="13"/>
+          <text class="mark-text" x="130" y="70">?</text>
+        </svg>
+        <svg class="piece piece--bib" viewBox="0 0 220 160">
+          <defs>
+            <pattern id="bib-dots" width="14" height="14" patternUnits="userSpaceOnUse">
+              <ellipse class="tint-cream" cx="3.5" cy="3.5" rx="2.5" ry="1.6" transform="rotate(-35 3.5 3.5)"/>
+              <ellipse class="tint-cream" cx="10.08" cy="10.08" rx="2.2" ry="1.5" transform="rotate(20 10.08 10.08)"/>
+            </pattern>
+            <radialGradient id="bib-wash" cx="45%" cy="38%" r="70%">
+              <stop offset="0" class="stop-light"/>
+              <stop offset="0.55" class="stop-main"/>
+              <stop offset="1" class="stop-deep"/>
+            </radialGradient>
+            <filter id="hand-bib" x="-6%" y="-6%" width="112%" height="112%" color-interpolation-filters="sRGB">
+              <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="2" result="warp"/>
+              <feDisplacementMap in="SourceGraphic" in2="warp" scale="4" xChannelSelector="R" yChannelSelector="G" result="shape"/>
+              <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="5" result="noise"/>
+              <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.24  0 0 0 0 0.2  0 0 0 0 0.18  0 0 0 0.6 -0.2" result="flecks"/>
+              <feComposite in="flecks" in2="shape" operator="in" result="grain"/>
+              <feMerge><feMergeNode in="shape"/><feMergeNode in="grain"/></feMerge>
+            </filter>
+          </defs>
+          <!-- Round bib drawn after the real Hommy bibs, with a hand-painted edge, wash and grain -->
+          <g filter="url(#hand-bib)">
+            <g class="trim-ruffle">
+              <path class="stroke-ruffle" d="M40 8C30 6 18 8 14 14C4 30 2 60 8 88C16 128 60 150 110 150C160 150 204 128 212 88C218 60 216 30 206 14C202 8 190 6 180 8" stroke-width="16" stroke-linecap="round" stroke-dasharray="0 7.5" fill="none"/>
+              <path class="stroke-dark" d="M40 8C30 6 18 8 14 14C4 30 2 60 8 88C16 128 60 150 110 150C160 150 204 128 212 88C218 60 216 30 206 14C202 8 190 6 180 8" stroke-width="15" stroke-dasharray="1 6.5" fill="none" opacity="0.3"/>
+            </g>
+            <path fill="url(#bib-wash)" d="M40 8C30 6 18 8 14 14C4 30 2 60 8 88C16 128 60 150 110 150C160 150 204 128 212 88C218 60 216 30 206 14C202 8 190 6 180 8C165 18 140 24 110 24C80 24 55 18 40 8Z"/>
+            <path fill="url(#bib-dots)" d="M40 8C30 6 18 8 14 14C4 30 2 60 8 88C16 128 60 150 110 150C160 150 204 128 212 88C218 60 216 30 206 14C202 8 190 6 180 8C165 18 140 24 110 24C80 24 55 18 40 8Z"/>
+            <path class="stroke-dark" d="M40 8C55 18 80 24 110 24C140 24 165 18 180 8" stroke-width="3" fill="none" opacity="0.45"/>
+            <path class="stroke-dark" d="M40 8C30 6 18 8 14 14C4 30 2 60 8 88C16 128 60 150 110 150C160 150 204 128 212 88C218 60 216 30 206 14C202 8 190 6 180 8C165 18 140 24 110 24C80 24 55 18 40 8Z" stroke-width="2" fill="none" opacity="0.3"/>
+            <path class="trim-pompom stroke-light" d="M40 8C30 6 18 8 14 14C4 30 2 60 8 88C16 128 60 150 110 150C160 150 204 128 212 88C218 60 216 30 206 14C202 8 190 6 180 8" stroke-width="7" stroke-linecap="round" stroke-dasharray="0 9" fill="none"/>
+          </g>
+          <circle class="mark-bg" cx="110" cy="84" r="15"/>
+          <text class="mark-text" x="110" y="84">?</text>
+        </svg>
+        <img class="doll-face" id="doll-face" src="images/face-10.png" alt="" width="320" height="400">
+        <svg class="piece piece--headband" viewBox="0 0 208 120">
+          <defs>
+            <radialGradient id="band-wash" cx="50%" cy="30%" r="75%">
+              <stop offset="0" class="stop-light"/>
+              <stop offset="0.55" class="stop-main"/>
+              <stop offset="1" class="stop-deep"/>
+            </radialGradient>
+            <filter id="hand-band" x="-6%" y="-6%" width="112%" height="112%" color-interpolation-filters="sRGB">
+              <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="6" result="warp"/>
+              <feDisplacementMap in="SourceGraphic" in2="warp" scale="4" xChannelSelector="R" yChannelSelector="G" result="shape"/>
+              <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="9" result="noise"/>
+              <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.24  0 0 0 0 0.2  0 0 0 0 0.18  0 0 0 0.6 -0.2" result="flecks"/>
+              <feComposite in="flecks" in2="shape" operator="in" result="grain"/>
+              <feMerge><feMergeNode in="shape"/><feMergeNode in="grain"/></feMerge>
+            </filter>
+          </defs>
+          <g filter="url(#hand-band)">
+            <path class="stroke-main" d="M18 100Q97 -6 178 100" stroke-width="9" stroke-linecap="round" fill="none"/>
+            <path class="stroke-light" d="M18 100Q97 -6 178 100" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
+            <path fill="url(#band-wash)" class="stroke-light" stroke-width="3" d="M86 52Q80 62 74 74L84 72Q88 62 94 54Z"/>
+            <path fill="url(#band-wash)" class="stroke-light" stroke-width="3" d="M98 52Q104 62 110 74L100 72Q96 62 90 54Z"/>
+            <path fill="url(#band-wash)" class="stroke-light" stroke-width="3" d="M92 40C78 22 60 6 42 10C26 14 24 36 30 52C36 68 66 66 92 48Z"/>
+            <path fill="url(#band-wash)" class="stroke-light" stroke-width="3" d="M92 40C106 22 124 6 142 10C158 14 160 36 154 52C148 68 118 66 92 48Z"/>
+            <path class="stroke-dark" d="M86 41Q64 30 44 22M86 46Q66 54 40 52M98 41Q120 30 140 22M98 46Q118 54 144 52" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.55"/>
+            <rect class="tint-dark" x="82" y="30" width="20" height="22" rx="8"/>
+          </g>
+          <circle class="mark-bg" cx="92" cy="41" r="9"/>
+          <text class="mark-text mark-text--small" x="92" y="41">?</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real Hommy gifts, shown like Instagram stories -->
+  <dialog class="stories" id="stories" aria-label="Real Hommy gifts">
+    <div class="stories-bars" id="stories-bars"></div>
+    <button type="button" class="bar-button stories-close" id="stories-close">
+      <span class="icon" style="--icon: url(icons/x.svg)" aria-hidden="true"></span>
+      <span class="visually-hidden">Close</span>
+    </button>
+    <figure class="stories-frame">
+      <img class="stories-photo" id="stories-photo" src="images/gifts/gift-01.jpg" alt="" width="900" height="886">
+      <figcaption class="stories-caption" id="stories-caption"></figcaption>
+    </figure>
+    <button type="button" class="stories-nav stories-nav--prev" id="stories-prev">
+      <span class="icon" style="--icon: url(icons/caret-left.svg)" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous photo</span>
+    </button>
+    <button type="button" class="stories-nav stories-nav--next" id="stories-next">
+      <span class="icon" style="--icon: url(icons/caret-right.svg)" aria-hidden="true"></span>
+      <span class="visually-hidden">Next photo</span>
+    </button>
+  </dialog>
+
+  <dialog class="help" id="help" aria-labelledby="help-title">
+    <div class="help-head">
+      <h2 id="help-title">Little promises</h2>
+      <button type="button" class="bar-button" id="help-close">
+        <span class="icon" style="--icon: url(icons/x.svg)" aria-hidden="true"></span>
+        <span class="visually-hidden">Close</span>
+      </button>
+    </div>
+    <dl>
+      <div>
+        <dt>What's inside?</dt>
+        <dd>Newborn: a bib, pacifier clip and headband. Kindergarten: a cape and headband. You choose the blessing colour; the exact fabric and design are a surprise, because every piece is made only once.</dd>
+      </div>
+      <div>
+        <dt>What if my colour has found all its homes?</dt>
+        <dd>We'll write to you within a day with the closest blessing we have, or return your e-Transfer in full.</dd>
+      </div>
+      <div>
+        <dt>When will it arrive?</dt>
+        <dd id="promise-shipping"></dd>
+      </div>
+      <div>
+        <dt>How do I pay?</dt>
+        <dd>By Interac e-Transfer from any Canadian bank. We begin wrapping as soon as it arrives.</dd>
+      </div>
+      <div>
+        <dt>Can I return it?</dt>
+        <dd>Because each box is one of a kind, we can't take returns. If anything arrives damaged, email us a photo and we'll make it right.</dd>
+      </div>
+      <div>
+        <dt>A note on safety</dt>
+        <dd>Please stay with your little one when they wear a pacifier clip, bib, headband or cape, and remove them all before sleep.</dd>
+      </div>
+    </dl>
+    <p class="help-contact">
+      <span class="icon" style="--icon: url(icons/envelope-simple.svg)" aria-hidden="true"></span>
+      <a id="contact-link" href="#"><span id="contact-text"></span></a>
+    </p>
+  </dialog>
+</body>
+</html>
